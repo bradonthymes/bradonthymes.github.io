@@ -8,11 +8,29 @@
     <meta name="author" content="Bradon Thymes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="images/Cornell_University_seal.svg.png" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css?v=dark-mode-toggle">
+    <script>
+      (function() {
+        try {
+          var savedTheme = localStorage.getItem('theme');
+          if (savedTheme === 'light' || savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          }
+        } catch (error) {
+          document.documentElement.removeAttribute('data-theme');
+        }
+      })();
+    </script>
     
   </head>
 
   <body>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+      <span class="theme-toggle-icon" aria-hidden="true">
+        <span class="theme-toggle-rays"></span>
+      </span>
+      <span class="theme-toggle-text">Dark mode</span>
+    </button>
     <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
       <tr style="padding:0px">
         <td style="padding:0px">
@@ -52,6 +70,32 @@
         <tr>
           <td colspan="2"><hr></td>
         </tr>
+
+    <tr>
+      <td style="padding:20px;width:25%;vertical-align:middle">
+        <div class="one" style="display:flex;align-items:center">
+          <img src='images/movierecapsqa_teaser.png' width="100%">
+        </div>
+      </td>
+      <td style="padding:20px;width:75%;vertical-align:middle">
+			<span class="papertitle">MovieRecapsQA: A Multimodal Open-Ended Video Question-Answering Benchmark
+</span>
+        </a>
+        <br>
+				<p>Shaden Shaar<sup>*</sup>, <strong>Bradon Thymes<sup>*</sup></strong>, Sirawut Chaixanien, Claire Cardie, Bharath Hariharan</p>
+        <!-- <br> -->
+        <em>CVPR</em>, 2026
+        <br>
+        <a href="https://arxiv.org/abs/2601.02536">arXiv</a>
+        <p></p>
+        <p>
+        Introduced an open-ended multimodal VideoQA benchmark built from movie recap videos, with fact-based evaluation for long-form video understanding.
+        </p>
+        <p><em><sup>*</sup> indicates equal contribution.</em></p>
+      </td>
+    </tr>
+
+    <td colspan="2"><hr></td>
 
     <tr>
       <td style="padding:20px;width:25%;vertical-align:middle">
@@ -293,5 +337,48 @@
 </tr>
 </table>
          
+  <script>
+    (function() {
+      var themeToggle = document.querySelector('.theme-toggle');
+      var themeToggleText = document.querySelector('.theme-toggle-text');
+      var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+      function activeTheme() {
+        return document.documentElement.getAttribute('data-theme') || (systemDark.matches ? 'dark' : 'light');
+      }
+
+      function updateThemeToggle() {
+        var isDark = activeTheme() === 'dark';
+        themeToggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+        themeToggleText.textContent = isDark ? 'Light mode' : 'Dark mode';
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          var nextTheme = activeTheme() === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', nextTheme);
+          try {
+            localStorage.setItem('theme', nextTheme);
+          } catch (error) {}
+          updateThemeToggle();
+        });
+
+        var handleSystemThemeChange = function() {
+          if (!document.documentElement.getAttribute('data-theme')) {
+            updateThemeToggle();
+          }
+        };
+
+        if (systemDark.addEventListener) {
+          systemDark.addEventListener('change', handleSystemThemeChange);
+        } else if (systemDark.addListener) {
+          systemDark.addListener(handleSystemThemeChange);
+        }
+
+        updateThemeToggle();
+      }
+    })();
+  </script>
   </body>
 </html>
